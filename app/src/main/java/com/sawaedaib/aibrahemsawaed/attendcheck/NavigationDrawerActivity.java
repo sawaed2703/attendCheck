@@ -16,6 +16,7 @@ import android.view.MenuItem;
 
 import com.sawaedaib.aibrahemsawaed.attendcheck.Utils.DetailsActivity;
 import com.sawaedaib.aibrahemsawaed.attendcheck.Utils.PlacesActivity;
+import com.sawaedaib.aibrahemsawaed.attendcheck.Utils.ScheduleActivity;
 
 public class NavigationDrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -86,7 +87,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
 
         if (id == R.id.nav_maps) {
             // Handle the camera action
-            startActivity(new Intent(this,DetailsActivity.class));
+            startActivity(new Intent(this,ScheduleActivity.class));
 
 
         } else if (id == R.id.nav_gallery) {
