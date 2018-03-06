@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "835748457280",
+    "firebase_url": "https://attendcheck-3cee1.firebaseio.com",
+    "project_id": "attendcheck-3cee1",
+    "storage_bucket": "attendcheck-3cee1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:835748457280:android:d781dab127b7c094",
+        "android_client_info": {
+          "package_name": "com.sawaedaib.aibrahemsawaed.attendcheck"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "835748457280-0i5udt7b1suin0653es2horlgabv985g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sawaedaib.aibrahemsawaed.attendcheck",
+            "certificate_hash": "8bdbac8f23076d6fd6e36ff1feccb58ce0e430f1"
+          }
+        },
+        {
+          "client_id": "835748457280-b176g81fpl9ofg0a6eb9v71qn7cuejud.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPhhPDbxAhrLzaoRFaIFwxInDT-SNhk9I"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "835748457280-b176g81fpl9ofg0a6eb9v71qn7cuejud.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
