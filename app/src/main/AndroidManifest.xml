@@ -56,6 +56,10 @@
         <activity
             android:name=".Utils.DetailsActivity"
             android:label="@string/title_activity_details"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Utils.ScheduleActivity"
+            android:label="@string/title_activity_schedule"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

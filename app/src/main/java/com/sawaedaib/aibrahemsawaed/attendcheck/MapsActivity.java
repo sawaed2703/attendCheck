@@ -1,6 +1,5 @@
 package com.sawaedaib.aibrahemsawaed.attendcheck;
 
-import android.*;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
@@ -24,6 +23,11 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.sawaedaib.aibrahemsawaed.attendcheck.DirectionJava.DirectionFinder;
 import com.sawaedaib.aibrahemsawaed.attendcheck.DirectionJava.DirectionFinderListener;
 import com.sawaedaib.aibrahemsawaed.attendcheck.DirectionJava.Route;
@@ -42,6 +46,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private List<Marker> destinationMarkers = new ArrayList<>();
     private List<Polyline> polylinePaths = new ArrayList<>();
     private ProgressDialog progressDialog;
+    String ref = null;
+    FirebaseDatabase database;
+    DatabaseReference myRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +63,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         etOrigin =  findViewById(R.id.etOrigin);
         etDestination = findViewById(R.id.etDestination);
 
+        etOrigin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ref = "work";
+                database= FirebaseDatabase.getInstance();
+                myRef= database.getReference("work");
+                getOriginLocation();
+            }
+        });
         btnFindPath.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,9 +80,58 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
+    private String getOriginLocation() {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference ref = database.getReference("home");
+        final String[] origin = new String[1];
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String s = dataSnapshot.getValue(String.class);
+                etOrigin.setText(s);
+                origin[0] = s.toString();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(MapsActivity.this, "error", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        return origin[0];
+    }
+    private String getDestinationLocation() {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference ref = database.getReference("work");
+        final String[] origin = new String[1];
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String s = dataSnapshot.getValue(String.class);
+                etDestination.setText(s);
+                origin[0] = s.toString();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(MapsActivity.this, "error", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        return origin[0];
+    }
+
+
     private void sendRequest() {
         String origin = etOrigin.getText().toString();
+        String s = new String();
+
         String destination = etDestination.getText().toString();
+        String destination1 =getOriginLocation();
+
+
         if (origin.isEmpty()) {
             Toast.makeText(this, "Please enter origin address!", Toast.LENGTH_SHORT).show();
             return;
@@ -77,7 +142,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         try {
-            new DirectionFinder(this, origin, destination).execute();
+            new DirectionFinder(this, origin, destination1).execute();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

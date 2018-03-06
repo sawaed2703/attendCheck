@@ -25,7 +25,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        btnStart = findViewById(R.id.btnStart);
+        btnStart = findViewById(R.id.btnSchedule);
         btnLocation = findViewById(R.id.btnLocation);
         tvWelcome = findViewById(R.id.tvWelcome);
         mAuth = FirebaseAuth.getInstance();
