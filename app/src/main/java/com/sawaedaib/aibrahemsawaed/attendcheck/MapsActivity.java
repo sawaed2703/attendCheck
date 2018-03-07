@@ -49,6 +49,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     String ref = null;
     FirebaseDatabase database;
     DatabaseReference myRef;
+    String destination;
+    String origin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         btnFindPath =  findViewById(R.id.btnFindPath);
         etOrigin =  findViewById(R.id.etOrigin);
         etDestination = findViewById(R.id.etDestination);
+        destination = new String();
+        origin = new String();
+
 
         etOrigin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,13 +88,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String getOriginLocation() {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference ref = database.getReference("home");
-        final String[] origin = new String[1];
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String s = dataSnapshot.getValue(String.class);
                 etOrigin.setText(s);
-                origin[0] = s.toString();
+                origin = s.toString();
+
 
             }
 
@@ -99,18 +104,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
-        return origin[0];
+        return origin;
     }
     private String getDestinationLocation() {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference ref = database.getReference("work");
-        final String[] origin = new String[1];
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String s = dataSnapshot.getValue(String.class);
                 etDestination.setText(s);
-                origin[0] = s.toString();
+                destination = s.toString();
 
             }
 
@@ -120,16 +124,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
-        return origin[0];
+        return destination;
     }
 
 
     private void sendRequest() {
-        String origin = etOrigin.getText().toString();
-        String s = new String();
-
-        String destination = etDestination.getText().toString();
-        String destination1 =getOriginLocation();
+         origin  =getOriginLocation().toString();
+       // String s = new String();
+//
+        destination = getDestinationLocation().toString();
+       // String destination1 =getOriginLocation();
 
 
         if (origin.isEmpty()) {
@@ -142,7 +146,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         try {
-            new DirectionFinder(this, origin, destination1).execute();
+            new DirectionFinder(this, origin, destination).execute();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -206,6 +210,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(route.startLocation, 16));
             ((TextView) findViewById(R.id.tvDuration)).setText(route.duration.text);
             ((TextView) findViewById(R.id.tvDistance)).setText(route.distance.text);
+            //tv time and distance
+
+
 
             originMarkers.add(mMap.addMarker(new MarkerOptions()
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.start_blue))

@@ -60,6 +60,10 @@
         <activity
             android:name=".Utils.ScheduleActivity"
             android:label="@string/title_activity_schedule"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CheckLocationActivity"
+            android:label="@string/title_activity_check_location"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

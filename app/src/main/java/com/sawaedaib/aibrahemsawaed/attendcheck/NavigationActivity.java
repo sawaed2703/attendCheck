@@ -38,6 +38,11 @@ public class NavigationActivity extends AppCompatActivity implements LocationLis
     private static final String TAG = "DirectionsActivity";
 
     private Button button;
+    //TODO : THIS ACTIVITY CHECK THE THE  TIME AND THE DISTANCE
+    //TODO : 1) FIREBASE GET THE COURSE INFO
+    //TODO : 2) CHECK THE CURRENT TIME AND TIME TO THE COURSE
+    //TODO : 3) SHOW THE TIME AND DISTANCE TO THE COURSE IF OK !
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
