@@ -9,7 +9,8 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.text.format.DateFormat;
+import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -28,7 +29,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.sawaedaib.aibrahemsawaed.attendcheck.Utils.DetailsActivity;
+import com.sawaedaib.aibrahemsawaed.attendcheck.Utils.LoginActivity;
 import com.sawaedaib.aibrahemsawaed.attendcheck.Utils.PlacesActivity;
 import com.sawaedaib.aibrahemsawaed.attendcheck.Utils.ScheduleActivity;
 
@@ -37,10 +38,11 @@ import java.util.Date;
 public class NavigationDrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    TextView tvCourseName, tvDateNow, tvStartCourse, tvEndCourse, tvCourseDate;
+    TextView tvCourseName, tvDateNow, tvStartCourse, tvEndCourse, tvCourseDate, tvOk, tvCompareDate;
     FirebaseDatabase database;
     DatabaseReference getCourseName,getMyCourseDate ,getMyCourseEndTime,getCourseStartTime;
     Button btnCheck;
+    String courseDate;
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -51,6 +53,8 @@ public class NavigationDrawerActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        courseDate = new String();
+
 
         //find :
         tvCourseName = findViewById(R.id.tvName);
@@ -59,16 +63,31 @@ public class NavigationDrawerActivity extends AppCompatActivity
         tvStartCourse = findViewById(R.id.tvStartCourse);
         tvEndCourse = findViewById(R.id.tvEndCourse);
         btnCheck = findViewById(R.id.btnCheck);
+        tvOk = findViewById(R.id.tvOk);
+        tvCompareDate = findViewById(R.id.tvCompareDate);
 
-        @SuppressLint({"NewApi", "LocalSuppress"}) Date c = Calendar.getInstance().getTime();
+        @SuppressLint({"NewApi", "LocalSuppress"})
+        Date c = Calendar.getInstance().getTime();
         System.out.println("Current time => " + c);
 
         SimpleDateFormat df = new SimpleDateFormat("dd / MMMM / yyyy");
         String formattedDate = df.format(c);
 
+
+
+
+        /*
+            private long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
+                long diffInMillies = date2.getTime() - date1.getTime();
+                return timeUnit.convert(diffInMillies, TimeUnit.MILLISECONDS);
+            }
+
+            long days = getDateDiff(date, now, TimeUnit.DAYS);
+         */
+
         tvDateNow.setText(formattedDate);
 
-        checkDate();
+//        checkDate(formattedDate);
 
 
         //Date d = new Date();
@@ -113,44 +132,93 @@ public class NavigationDrawerActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    private void checkDate() {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void checkDate(String formattedDate) {
         //TODO : check current date and course date
 
-        String month = null;
+        @SuppressLint({"NewApi", "LocalSuppress"}) Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm aa");
+        String getCurrentDateTime = sdf.format(c.getTime());
+        String getMyTime = "05/19/2016 09:45 PM ";
+        Log.d("getCurrentDateTime", getCurrentDateTime);
+// getCurrentDateTime: 05/23/2016 18:49 PM
+
+        if (getCurrentDateTime.compareTo(String.valueOf(courseDate)) < 0) {
+            tvCompareDate.setText(getCurrentDateTime + "    ???" + courseDate);
+
+        } else {
+            String inputDateString = "07/07/2018";
+            Calendar calCurr = Calendar.getInstance();
+            Calendar dateCourse = Calendar.getInstance();
+            Calendar calNext = dateCourse;
+            calNext.setTime(new Date(inputDateString));
+
+            if (calNext.after(calCurr)) {
+                long timeDiff = calNext.getTimeInMillis() - calCurr.getTimeInMillis();
+                int daysLeft = (int) (timeDiff / DateUtils.DAY_IN_MILLIS);
+                long a = calCurr.getTimeInMillis();
+                long b = calCurr.getTimeInMillis();
+               // tvOk.setText(String.valueOf(a));
+                if (DateUtils.isToday(b)){
+                    Toast.makeText(this, "ok", Toast.LENGTH_SHORT).show();
+                }
+
+//                tvCompareDate.setText(daysLeft);
+            } else {
+                long timeDiff = calCurr.getTimeInMillis() - calNext.getTimeInMillis();
+                timeDiff = DateUtils.YEAR_IN_MILLIS - timeDiff;
+                int daysLeft = (int) (timeDiff / DateUtils.DAY_IN_MILLIS);
+                tvCompareDate.setText("Days Left: " + daysLeft);
+
+            }
+            //Double a = Double.valueOf(getCurrentDateTime) - Double.valueOf(courseDate);
+            Log.d("Return", "getMyTime older than getCurrentDateTime ");
+        }
+        String month = formattedDate;
 
         int monthNum = 0;
-        switch (month){
+        switch (month) {
 
-            case "January" : monthNum =1;
-            break;
-            case "February":monthNum =2;
-            break;
-            case "March " : monthNum =3;
+            case "January":
+                monthNum = 1;
                 break;
-            case "April" : monthNum =4;
+            case "February":
+                monthNum = 2;
                 break;
-            case "May" : monthNum =5;
+            case "March ":
+                monthNum = 3;
                 break;
-            case "June" : monthNum =6;
+            case "April":
+                monthNum = 4;
                 break;
-            case "July " : monthNum =7;
+            case "May":
+                monthNum = 5;
                 break;
-            case "August" : monthNum =8;
+            case "June":
+                monthNum = 6;
+                break;
+            case "July ":
+                monthNum = 7;
+                break;
+            case "August":
+                monthNum = 8;
                 break;
 
-            case "September" : monthNum =9;
+            case "September":
+                monthNum = 9;
                 break;
-            case "October" : monthNum =10;
+            case "October":
+                monthNum = 10;
                 break;
-            case "November " : monthNum =11;
+            case "November ":
+                monthNum = 11;
                 break;
-            case "December" : monthNum =12;
+            case "December":
+                monthNum = 12;
                 break;
 
         }
     }
-
-
     private void courseInfo() {
 
         getMyCourseDate.addValueEventListener(new ValueEventListener() {
@@ -158,6 +226,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String s = dataSnapshot.getValue(String.class);
                 tvCourseDate.setText(s);
+                courseDate = s;
 
             }
 
@@ -246,17 +315,20 @@ public class NavigationDrawerActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_maps) {
+        if (id == R.id.nav_schedulde) {
             // Handle the camera action
             startActivity(new Intent(this,ScheduleActivity.class));
 
 
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_maps) {
             startActivity(new Intent(this,MapsActivity.class));
 
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_places) {
             startActivity(new Intent(this,PlacesActivity.class));
+
+        } else if (id == R.id.nav_user) {
+            startActivity(new Intent(this,LoginActivity.class));
 
 
         } else if (id == R.id.nav_manage) {

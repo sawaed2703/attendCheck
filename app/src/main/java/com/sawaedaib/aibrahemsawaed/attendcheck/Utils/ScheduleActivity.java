@@ -123,7 +123,7 @@ public class ScheduleActivity extends AppCompatActivity {
                 String cousreNameText = etCousreName.getText().toString();
                 String startTimeC = etStart.getText().toString();
                 String endTimeC = etEnd.getText().toString();
-                String Date = "06/03/2018";
+                String Date = "03/03/2018";
                 couseName.setValue(cousreNameText);
                 startTime.setValue(startTimeC);
                 endTime.setValue(endTimeC);
